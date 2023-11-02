@@ -15,5 +15,3 @@ const user : {
     lastName: 'Hasan',
     isMarried: false,
 }
-
-user.
