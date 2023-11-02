@@ -17,7 +17,7 @@
     const mentors2 = {
         prisma: 'Firoz',
         next: 'Tonmoy',
-        clout: 'Nahid',
+        cloud: 'Nahid',
     }
 
     const mentorList = {
@@ -25,11 +25,13 @@
         ...mentors2,
     }
 
+    console.log(mentorList);
+
 
     //learn rest operator
     const greetFriends = (...friends: string[]) =>{
         // console.log(`Hi ${friend1} ${friend2} ${friend3}`);
-        friends.forEach((friend : string)=> console.log(`hi ${friend}`);)
+        friends.forEach((friend : string)=> console.log(`hi ${friend}`));
     }
 
     greetFriends('Rakib','Sakib','Khalid','Rashed');
