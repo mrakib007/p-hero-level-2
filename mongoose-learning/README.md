@@ -98,3 +98,31 @@ db.test.find({friends : {$size:4}}).project({friends:1})
 //shows those array with length 4
 
 db.test.find({company : {$type:"null"}}).project({company:1})
+
+db.test.find({interests:"Cooking"}).project({interests:1})
+db.test.find({"interests.2":"Cooking"}).project({interests:1})
+//gives those results that has cooking at the 2nd position in the array.
+
+db.test.find({interests:["Cooking","Writing","Reading"]}).project({interests:1})
+//Here we have to maintain the order of the array to find the result.
+
+db.test.find({interests:{$all:["Cooking","Writing","Reading"]}}).project({interests:1})
+//gives all the results regardless of the order of the array.
+
+db.test.find({"skills.name":"JAVASCRIPT"}).project({skills:1})
+db.test.find({skills:{
+    name:"JAVASCRIPT",
+    level:"Intermidiate",
+    learning: false
+}}).project({skills:1})
+//this also matches exactly like array.
+
+db.test.find({
+    skills:{$eleMatch:{
+        name: "JAVASCRIPT",
+        level: "Intermidiate"
+    }}
+}).project({skills:1})
+//this doesn't have to match exactly.
+
+
