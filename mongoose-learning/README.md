@@ -85,3 +85,16 @@ db.test.find({ "skills.name": { $in: ["JAVASCRIPT","PYTHON"] }}).project({
     age: 1
 })
 //Explicit or
+
+db.test.find({age:{$exists:true}})
+//It will return true if the document has the field that we are searching with. 
+
+db.test.find({age:{$type:"string"}})
+db.test.find({friends:{$type:"array"}})
+//checks if any field age has the type string.
+//checks if any field named friends has the type array.
+
+db.test.find({friends : {$size:4}}).project({friends:1})
+//shows those array with length 4
+
+db.test.find({company : {$type:"null"}}).project({company:1})
