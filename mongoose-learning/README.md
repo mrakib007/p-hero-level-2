@@ -42,52 +42,52 @@ db.test.find({ age: { $ne: 15, $le: 30 } })
 implicit and
 
 db.test.find({
-    $and: [
-        { gender: "Female" },
-        { age: { $ne: 15 } },
-        { age: { $lte: 30 } }
-    ]
+$and: [
+{ gender: "Female" },
+{ age: { $ne: 15 } },
+{ age: { $lte: 30 } }
+]
 }).project({
-    age: 1,
-    gender: 1
+age: 1,
+gender: 1
 }).sort({
-    age: 1
+age: 1
 })
 //Explicit and, every condition has to be true.
 
 db.test.find({
-    $or: [
-        {interests: "Traveling"},
-        {interests: "Cooking"},
-    ]
+$or: [
+{interests: "Traveling"},
+{interests: "Cooking"},
+]
 }).project({
-    interests: 1
+interests: 1
 }).sort({
-    age: 1
+age: 1
 })
 //Explicit or. Any true condition will give result.
 
 db.test.find({
-    $or: [
-        {"skills.name" : "JAVASCRIPT"},
-        {"skills.name" : "PYTHON"},
-    ]
+$or: [
+{"skills.name" : "JAVASCRIPT"},
+{"skills.name" : "PYTHON"},
+]
 }).project({
-    "skills": 1
+"skills": 1
 }).sort({
-    age: 1
+age: 1
 })
 //Explicit or. Any true condition will give result.
 
 db.test.find({ "skills.name": { $in: ["JAVASCRIPT","PYTHON"] }}).project({
-    "skills": 1
+"skills": 1
 }).sort({
-    age: 1
+age: 1
 })
 //Explicit or
 
 db.test.find({age:{$exists:true}})
-//It will return true if the document has the field that we are searching with. 
+//It will return true if the document has the field that we are searching with.
 
 db.test.find({age:{$type:"string"}})
 db.test.find({friends:{$type:"array"}})
@@ -111,49 +111,49 @@ db.test.find({interests:{$all:["Cooking","Writing","Reading"]}}).project({intere
 
 db.test.find({"skills.name":"JAVASCRIPT"}).project({skills:1})
 db.test.find({skills:{
-    name:"JAVASCRIPT",
-    level:"Intermidiate",
-    learning: false
+name:"JAVASCRIPT",
+level:"Intermidiate",
+learning: false
 }}).project({skills:1})
 //this also matches exactly like array.
 
 db.test.find({
-    skills:{$eleMatch:{
-        name: "JAVASCRIPT",
-        level: "Intermidiate"
-    }}
+skills:{$eleMatch:{
+name: "JAVASCRIPT",
+level: "Intermidiate"
+}}
 }).project({skills:1})
 //this doesn't have to match exactly.
 
-db.test.find({_id:ObjectId("here is the object id of mongodb")})
+db.test.find({\_id:ObjectId("here is the object id of mongodb")})
 //find specific document.
 
 db.test.updateOne({
-    {the document I want to update},
-    {what do I want to update},
+{the document I want to update},
+{what do I want to update},
 })
 
 db.test.updateOne(
-    {_id:ObjectId("specific id of the document")},
-    {$set:{
-        age: 80 //this will update the age.
-    }},
-    )
+{\_id:ObjectId("specific id of the document")},
+{$set:{
+age: 80 //this will update the age.
+}},
+)
 
 db.test.updateOne(
-    {_id:ObjectId("specific id of the document")},
-    {$set:{
-        interests: "Gaming" //This will replace the whole array.
-        interests: ["Gaming","Cooking"] //this will replace the value with array. $set should be used while changing primitive value
-    }},
-    )
-    
+{\_id:ObjectId("specific id of the document")},
+{$set:{
+interests: "Gaming" //This will replace the whole array.
+interests: ["Gaming","Cooking"] //this will replace the value with array. $set should be used while changing primitive value
+}},
+)
+
 db.test.updateOne(
-    {_id:ObjectId("specific id of the document")},
-    {$addToSet:{
-        interests: ["Gaming"] //this will add another array in place of the array where data is stored.
-        interests: ["Cooking"] //Only new value will be added. Duplicate values will not be added.
-        if we use ["",""] more than one value with $addToSet, it will add an entire new array.
+{\_id:ObjectId("specific id of the document")},
+{$addToSet:{
+interests: ["Gaming"] //this will add another array in place of the array where data is stored.
+interests: ["Cooking"] //Only new value will be added. Duplicate values will not be added.
+if we use ["",""] more than one value with $addToSet, it will add an entire new array.
 
         interests:{$each:['Cooking',"Driving"]}
         //this can be used when I want to set more than one value in an array.
@@ -163,4 +163,32 @@ db.test.updateOne(
     }},
     )
 
+    db.test.updateOne(
+        {_id:ObjectId("") },
+       {$unset:{birthday:""}} //this will remove birthday from the specific field
+        )
 
+    db.test.updateOne(
+        {_id:ObjectId("") },
+       {$unset:{age:1}} //this will remove age from the specific field
+        )
+
+    db.test.updateOne(
+        {_id:ObjectId("") },
+       {$pop:{friends:1}}, //this will remove last element from the array of friends
+       {$pop:{friends:-1}} //this will remove first element from the array of friends
+       {$pull:{friends:"Fahim Ahammed Firoz"}} //this will pull the document
+       {$pullAll:{friends:["Mir Hussain","Fahim Ahammed Firoz"]}} //this will pull the whole array from document
+        )
+
+db.test.updateOne(
+    {_id:ObjectId("id")},
+    {
+        $set:{
+            "address.city":"Dhaka", //this will change the value of the object. As it's nested we have to use address.city.
+
+            "address.country " : "France",
+            address.postalCode: "8000",
+        }
+    }
+)
