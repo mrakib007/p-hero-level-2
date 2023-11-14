@@ -192,3 +192,29 @@ db.test.updateOne(
         }
     }
 )
+
+db.test.updateOne(
+    {_id:ObjectId("id"),"education.$.major":"Biology"},
+    {
+        $set:{
+            "education.major": "CSE" //change element from array of objects
+        }
+    }
+    )
+
+db.test.updateOne(
+    {_id: ObjectId("id")},
+    {
+        $inc:{
+            age: 1 //increment the age by 1
+        }
+    }
+)
+
+db.test.delteOne({_id: ObjectId("id")})
+
+db.createCollection("post") //create a collection
+
+db.posts.insertOne({test: "Testing the database"});
+
+db.posts.drop({writeConcern:{w:1}})
