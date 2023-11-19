@@ -166,3 +166,73 @@ db.test.aggregate([
 
 ])
 //Grouping with bucket with specific boundaries
+
+db.test.aggregate([
+    {
+        $facet: {
+            //pipeline 1
+            "friendsCount": [
+                //stage 1
+                {
+                    $unwind: "$friends"
+                },
+                // Stage 2
+                {
+                    $group: { _id: "$friends", count: { $sum: 1 } }
+                }
+            ],
+            //pipeline 2
+            "educationCount": [
+                //stage 1
+                {
+                    $unwind: "$education"
+                },
+                //stage 2
+                {
+                    $group: { _id: "$education", count: { $sum: 1 } }
+                }
+            ],
+            //pipeline 3
+            "skillsCount": [
+                //stage 1
+                {
+                    $unwind: "$skills"
+                },
+                //stage 2
+                {
+                    $group: { _id: "$skills", count: { $sum: 1 } }
+                }
+            ]
+        }
+    }
+])
+//Facet for multiple pipeline and the group them with unwind.
+
+db.orders.aggregate([
+    {
+        $lookup: {
+               from: "test",
+               localField: "userId",
+               foreignField: "_id",
+               as: "user"
+             }
+    }
+    ])
+//Lookup stage and embedding vs referencing
+
+db.getCollection("massive-data").createIndex({email: 1})
+//creating a new index and then collscanning and ixscanning
+//ixscanning form big data collscanning for small data
+
+db.getCollection("massive-data").createIndex({
+    about : "text"
+})
+//creating a new index for searching with a text
+
+db.getCollection("massive-data").find({$text : {
+    $search: "dolor"
+} }).project({
+    about:1
+})
+//searching with specific text and
+ learning about compound index and text index
