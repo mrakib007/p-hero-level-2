@@ -39,10 +39,20 @@ const logger = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // app.get("/:userId/:subid",(req : Request,res : Response)=>{ //params
-app.get("/", logger, (req: Request, res: Response) => {
+app.get("/", logger, async(req: Request, res: Response,next:NextFunction) => {
   // console.log(req.params);
   // console.log(req.query);
-  res.send("Hello developers,Good morning");
+  // res.send("Hello developers,Good morning");
+  try{
+
+    res.send(something);
+  }catch(error){
+    next(error)
+    // res.status(400).json({
+    //   success:false,
+    //   message: 'Failed to get data',
+    // })
+  }
 });
 app.post("/", logger, (req: Request, res: Response) => {
   console.log(req.body);
@@ -50,4 +60,23 @@ app.post("/", logger, (req: Request, res: Response) => {
     message: "Successfully received data",
   });
 });
+
+//this has to be defined after all the router
+app.all("*",(req:Request,res:Response)=>{
+  res.status(400).json({
+    success: false,
+    message: 'Route not found',
+  })
+})
+
+//global error handler
+app.use((error:any,req:Request,res:Response,next:NextFunction)=>{
+  if(error){
+    res.status(400).json({
+      success:false,
+      message: 'Something went wrong',
+    })
+  }
+})
+
 export default app;
