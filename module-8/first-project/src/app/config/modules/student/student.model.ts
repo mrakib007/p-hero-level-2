@@ -1,65 +1,70 @@
-import { Schema, model, connect } from 'mongoose';
-import { Student, LocalGuardian, UserName, Guardian } from './student.interface';
+import { Schema, model } from 'mongoose';
+import {
+  Student,
+  LocalGuardian,
+  UserName,
+  Guardian,
+} from './student.interface';
 
 const userNameSchema = new Schema<UserName>({
-        firstName: {
-          type: String,
-          required: true,
-        },
-        middleName: {
-          type: String,
-        },
-        lastName: {
-          type: String,
-          required: true,
-        },
-})
+  firstName: {
+    type: String,
+    required: true,
+  },
+  middleName: {
+    type: String,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+});
 
 const guardianSchema = new Schema<Guardian>({
-    fatherName: {
-      type: String,
-      required: true,
-    },
-    fatherOccupation: {
-      type: String,
-      required: true,
-    },
-    fatherContactNo: {
-      type: String,
-      required: true,
-    },
-    motherName: {
-      type: String,
-      required: true,
-    },
-    motherOccupation: {
-      type: String,
-      required: true,
-    },
-    motherContactNo: {
-      type: String,
-      required: true,
-    },
-  })
+  fatherName: {
+    type: String,
+    required: true,
+  },
+  fatherOccupation: {
+    type: String,
+    required: true,
+  },
+  fatherContactNo: {
+    type: String,
+    required: true,
+  },
+  motherName: {
+    type: String,
+    required: true,
+  },
+  motherOccupation: {
+    type: String,
+    required: true,
+  },
+  motherContactNo: {
+    type: String,
+    required: true,
+  },
+});
 
-  const localGuardianSchema = new Schema<LocalGuardian>({
-    name: {
-      type: String,
-      require: true,
-    },
-    occupation: {
-      type: String,
-      require: true,
-    },
-    contactNo: {
-      type: String,
-      require: true,
-    },
-    address: {
-      type: String,
-      require: true,
-    },
-  },)
+const localGuardianSchema = new Schema<LocalGuardian>({
+  name: {
+    type: String,
+    require: true,
+  },
+  occupation: {
+    type: String,
+    require: true,
+  },
+  contactNo: {
+    type: String,
+    require: true,
+  },
+  address: {
+    type: String,
+    require: true,
+  },
+});
 
 const studentSchema = new Schema<Student>({
   id: { type: String },
@@ -95,4 +100,4 @@ const studentSchema = new Schema<Student>({
   isActive: ['active', 'blocked'],
 });
 
-export const StudentModel = model<Student>('Student',studentSchema);
+export const StudentModel = model<Student>('Student', studentSchema);
