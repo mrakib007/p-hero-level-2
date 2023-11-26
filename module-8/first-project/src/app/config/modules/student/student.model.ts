@@ -10,13 +10,26 @@ const userNameSchema = new Schema<UserName>({
   firstName: {
     type: String,
     required: [true,'First name is required'],
+    trim: true,
+    maxlength: [20,'First Name can not have allowed more than 20 characters'],
+    validate: {
+      validator: function (value){
+        const firstNameStr = value.charAt(0).toUpperCase() + value.slice(1);
+        return firstNameStr === value;
+      },
+      message: '{VALUE} is not in capitalized format'
+    }
   },
   middleName: {
     type: String,
+    trim: true,
+    maxlength: 20,
   },
   lastName: {
     type: String,
     required: [true,'Last name is required'],
+    trim: true,
+    maxlength: 20,
   },
 });
 
@@ -24,6 +37,8 @@ const guardianSchema = new Schema<Guardian>({
   fatherName: {
     type: String,
     required: [true,'Father name is required'],
+    trim: true,
+    maxlength: 20,
   },
   fatherOccupation: {
     type: String,
@@ -36,6 +51,8 @@ const guardianSchema = new Schema<Guardian>({
   motherName: {
     type: String,
     required: [true,'Mother name is required'],
+    maxlength: 20,
+    trim: true,
   },
   motherOccupation: {
     type: String,
@@ -51,6 +68,7 @@ const localGuardianSchema = new Schema<LocalGuardian>({
   name: {
     type: String,
     require: [true,'Name is required'],
+    maxlength: 20,
   },
   occupation: {
     type: String,
