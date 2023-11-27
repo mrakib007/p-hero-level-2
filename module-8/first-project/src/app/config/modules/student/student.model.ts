@@ -8,6 +8,8 @@ import {
   StudentModel,
   StudentMethods,
 } from './student.interface';
+import bcrypt from 'bcrypt';
+import config from '../..';
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -93,7 +95,13 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
 
 // const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
 const studentSchema = new Schema<TStudent, StudentModel>({
-  id: { type: String, required: true, unique: true },
+  id: {
+    type: String,
+    required: [true, 'Password is required'],
+    maxlength: [20, 'Password can not be more than 20 characters'],
+    unique: true,
+  },
+  password: { type: String, required: true, unique: true },
   name: {
     type: userNameSchema,
     required: [true, 'Name is required'],
@@ -154,11 +162,29 @@ const studentSchema = new Schema<TStudent, StudentModel>({
   },
 });
 
+//pre save middleware/hook : will work on create() save()
+studentSchema.pre('save', async function (next) {
+  // console.log(this,'pre hook : we will save the data');
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this;
+  //hashing password and save into DB
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_round),
+  );
+  next();
+});
+
+//post save middleware/hook
+studentSchema.post('save', function () {
+  console.log(this, 'post hook : we save our data');
+});
+
 //creating a custom static method
-studentSchema.statics.isUserExists = async function(id: string){
-  const existingUser = await Student.findOne({id})
+studentSchema.statics.isUserExists = async function (id: string) {
+  const existingUser = await Student.findOne({ id });
   return existingUser;
-}
+};
 
 //creating a custom instance method
 
