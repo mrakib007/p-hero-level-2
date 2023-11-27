@@ -33,7 +33,7 @@ const userNameSchema = new Schema<TUserName>({
     required: [true, 'Last name is required'],
     // validate: {
     //   validator: (value : string) => validator.isAlpha(value),
-    //   message: '{VALUE} is not valid',  
+    //   message: '{VALUE} is not valid',
     // },
     trim: true,
     maxlength: 20,
@@ -101,7 +101,7 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
     type: String,
     enum: {
       values: ['male', 'female', 'other'],
-      message: "{VALUE} is not valid",
+      message: '{VALUE} is not valid',
     },
     required: [true, 'Name is required'],
   },
@@ -113,7 +113,7 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
     validate: {
       validator: (value: string) => validator.isEmail(value),
       message: '{VALUE} is not valid email',
-    }
+    },
   },
   contactNumber: {
     type: String,
@@ -150,12 +150,12 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
     type: String,
     enum: ['active', 'blocked'],
     default: 'active',
-  }
+  },
 });
 
 studentSchema.methods.isUserExists = async function (id: string) {
-  const existingUser = Studnt.findOne({ id: id })
+  const existingUser = Student.findOne({ id: id });
   return existingUser;
-}
+};
 
-export const Student = model<TStudent>('Student', studentSchema);
+export const Student = model<TStudent, StudentModel>('Student', studentSchema);
