@@ -180,7 +180,7 @@ studentSchema.pre('save', async function (next) {
 });
 
 //post save middleware/hook
-studentSchema.post('save', function (doc,next) {
+studentSchema.post('save', function (doc, next) {
   doc.password = '';
   // console.log(this, 'post hook : we save our data');
 
@@ -188,8 +188,23 @@ studentSchema.post('save', function (doc,next) {
 });
 
 //query middleware
-studentSchema.pre('find',function(next){
-  this.find
+studentSchema.pre('find', function (next) {
+  this.find({
+    isDeleted: { $ne: true }
+  });
+  next();
+})
+
+studentSchema.pre('findOne', function (next) {
+  this.find({
+    isDeleted: { $ne: true }
+  });
+  next();
+})
+
+studentSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } })
+  next();
 })
 
 //creating a custom static method
